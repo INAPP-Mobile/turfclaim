@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TurfClaim - a tiny territory strategy game</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div class="brand">TurfClaim</div>
+  <div class="tagline">claim land. build clusters. outscore everyone.</div>
+</header>
+
+<main>
+  <!-- HOME -->
+  <section id="view-home" class="view">
+    <div class="card">
+      <h2>Play TurfClaim</h2>
+      <p class="muted">2-4 players. Claim cells on a 6x6 grid. Connected groups multiply their points. Highest score wins.</p>
+      <label>Your name
+        <input id="home-name" maxlength="24" placeholder="e.g. Alex" autocomplete="off">
+      </label>
+      <div class="row">
+        <button id="btn-create" class="primary">Create lobby</button>
+      </div>
+      <div class="divider">or join with a lobby code</div>
+      <label>Lobby code
+        <input id="home-code" maxlength="6" placeholder="e.g. KQ7X2P" autocomplete="off" class="code-input">
+      </label>
+      <div class="row">
+        <button id="btn-join">Join lobby</button>
+      </div>
+      <div id="home-error" class="error"></div>
+      <details class="rules">
+        <summary>How to play</summary>
+        <p>On your turn, claim one empty cell. Each cell is worth 1-3 points. Your score is the sum over your connected groups of <b>(group points x group size)</b> - so a connected cluster multiplies its value. Merge two groups with one bridge cell and both groups count as one bigger group. The game ends when the board is full or everyone passes in a row. Highest score wins. Bots play with a greedy strategy and are beatable - block their bridges.</p>
+      </details>
+      <p class="muted small">Agents: this game has a JSON API. See <a href="https://github.com/mc9max/turfclaim" target="_blank" rel="noopener">the repo README</a> for docs and a sample bot.</p>
+    </div>
+  </section>
+
+  <!-- LOBBY -->
+  <section id="view-lobby" class="view hidden">
+    <div class="card">
+      <h2>Lobby</h2>
+      <div class="lobby-code-wrap">
+        <div class="lobby-code" id="lobby-code">------</div>
+        <button id="btn-copy" class="ghost">Copy code</button>
+      </div>
+      <p class="muted small">Share this code - friends (or bots) join from the home screen. Empty seats can be filled by a bot.</p>
+      <ul id="lobby-players" class="player-list"></ul>
+      <div class="row">
+        <button id="btn-addbot" class="ghost">Add bot</button>
+        <button id="btn-start" class="primary">Start game</button>
+      </div>
+      <div id="lobby-error" class="error"></div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="view-game" class="view hidden">
+    <div class="game-wrap">
+      <div class="board-col">
+        <div id="turn-banner" class="turn-banner">Waiting...</div>
+        <div id="board" class="board"></div>
+        <div class="row">
+          <button id="btn-pass" class="ghost">Pass turn</button>
+          <button id="btn-new" class="ghost">New game</button>
+        </div>
+      </div>
+      <div class="side-col">
+        <div class="card">
+          <h3>Scores</h3>
+          <ul id="score-list" class="player-list"></ul>
+        </div>
+        <div class="card">
+          <h3>Move log</h3>
+          <ol id="move-log" class="move-log"></ol>
+        </div>
+      </div>
+    </div>
+    <div id="win-overlay" class="overlay hidden">
+      <div class="card win-card">
+        <h2 id="win-title">Game over</h2>
+        <ul id="win-scores" class="player-list"></ul>
+        <div class="row">
+          <button id="btn-again" class="primary">Back to home</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>TurfClaim - tiny multiplayer strategy for humans and agents.</span>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>
