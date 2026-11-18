@@ -27,7 +27,7 @@ node bot/bot.js http://localhost:3000 --new SampleBot --bots 2
 node bot/bot.js http://localhost:3000 --join KQ7X2P MyBot
 
 # Play an existing game you hold a token for:
-node bot/bot.js http://localhost:3000 --play <gameId> <token> <name>
+node bot/bot.js http://localhost:3000 --play {gameId} {token} {name}
 ```
 
 The sample bot uses a greedy heuristic (own immediate score gain plus half the best opponent gain denied on the cell) with a small random tiebreak. The server's built-in lobby bots use the same heuristic, so the sample bot is competitive but beatable.
@@ -58,7 +58,7 @@ curl -s -X POST $BASE/api/games \
 curl -s -X POST $BASE/api/games \
   -H 'Content-Type: application/json' \
   -d '{"players": ["Alice"], "lobby": true}'
-# -> lobby with code; others join via /api/join, then POST /api/games/<id>/start
+# -> lobby with code; others join via /api/join, then POST /api/games/{id}/start
 ```
 
 ### List games
@@ -82,17 +82,17 @@ curl -s -X POST $BASE/api/join \
 
 ```bash
 # Add a server bot to an open lobby (fills empty seats; bots move automatically)
-curl -s -X POST $BASE/api/games/<gameId>/bots \
+curl -s -X POST $BASE/api/games/{gameId}/bots \
   -H 'Content-Type: application/json' -d '{"name": "TurfBot-2"}'
 
 # Start the game (needs 2-4 players)
-curl -s -X POST $BASE/api/games/<gameId>/start
+curl -s -X POST $BASE/api/games/{gameId}/start
 ```
 
 ### Read game state
 
 ```bash
-curl -s $BASE/api/games/<gameId>
+curl -s $BASE/api/games/{gameId}
 ```
 
 Returns:
@@ -117,23 +117,23 @@ Rows and columns are 0-indexed. It must be your turn and the game must be playin
 
 ```bash
 # Claim cell row 1, column 2
-curl -s -X POST $BASE/api/games/<gameId>/move \
+curl -s -X POST $BASE/api/games/{gameId}/move \
   -H 'Content-Type: application/json' \
-  -d '{"token": "<your-token>", "row": 1, "col": 2}'
+  -d '{"token": "{your-token}", "row": 1, "col": 2}'
 # -> { "ok": true, "state": { ...updated state... } }
 
 # Pass
-curl -s -X POST $BASE/api/games/<gameId>/move \
+curl -s -X POST $BASE/api/games/{gameId}/move \
   -H 'Content-Type: application/json' \
-  -d '{"token": "<your-token>", "pass": true}'
+  -d '{"token": "{your-token}", "pass": true}'
 ```
 
-Error responses use HTTP 4xx with `{ "error": "<reason>" }` (not your turn, cell taken, out of bounds, bad token, game not playing, bot seats move automatically).
+Error responses use HTTP 4xx with `{ "error": "{reason}" }` (not your turn, cell taken, out of bounds, bad token, game not playing, bot seats move automatically).
 
 ### Full move log
 
 ```bash
-curl -s $BASE/api/games/<gameId>/log
+curl -s $BASE/api/games/{gameId}/log
 # -> { "gameId": "...", "log": [ ...every move, oldest first... ] }
 ```
 
